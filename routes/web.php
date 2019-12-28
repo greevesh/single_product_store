@@ -11,7 +11,12 @@
 |
 */
 
-Route::view('/', 'landing');
-Route::view('/checkout', 'checkout');
+Route::view('/', 'landing')->name('landing');
+Route::view('/checkout', 'checkout')->name('checkout');
+Route::view('/confirmation', 'confirmation')->name('confirmation');
 
+// enables backend form validation
 Route::post('/checkout', 'CheckoutController@store')->name('checkout.store'); 
+
+// adds product to cart
+Route::post('/', 'CartController@store')->name('cart.store');
