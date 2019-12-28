@@ -13,11 +13,28 @@
           <input name="name" type="hidden" value="{{ $product->name }}"> 
           <input name="price" type="hidden" value="{{ $product->price }}"> 
         </form> --}}
-      @else
-        <span>Hi</span>
       @endif 
       <h5>£{{ Cart::total() }}</h5>
       <h5>Quantity: {{ Cart::count() }}</h5>
+
+      {{-- INCREASE PRODUCT QUANTITY --}}
+      {{-- <form action="{{ route('cart.update', $product->rowId) }}" method="POST"> --}}
+        @csrf
+        @method('UPDATE')
+        <div style="margin-top: -1rem;">
+          <button class="bg-success text-white mt-1" style="margin-left: 1.35rem; width: 2rem;"><strong>+</strong></button>
+        </div>
+      </form>
+      {{-- END INCREASE PRODUCT QUANTITY --}}
+
+      {{-- DECREASE PRODUCT QUANTITY --}}
+      {{-- <form action="{{ route('cart.decreaseQuantity', $product->rowId) }}" method="POST"> --}}
+        @csrf
+        @method('UPDATE')
+        <button class="bg-danger text-white" style="margin-left: 1.35rem; width: 2rem;"><strong>-</strong></button>
+      </form>
+      {{-- END DECREASE PRODUCT QUANTITY --}}
+
       <a class="btn btn-outline-secondary" href="{{ route('checkout.store') }}">Order now</a>
       <script src="https://www.paypal.com/sdk/js?client-id=AbuLwSBZC2p5XMwhs2m-GijPW-cbmlvYYknzjfPuiM8m9uzwBJxlbBORzGy9nN7CfxvydOZrWN-yTkgz"></script>
     </div>
