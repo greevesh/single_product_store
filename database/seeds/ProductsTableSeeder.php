@@ -12,7 +12,7 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        Game::create([
+        Product::create([
             'name' => 'Herbalife Protein Powder', 
             'price' => floatval('59.99')
         ]);

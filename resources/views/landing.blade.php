@@ -7,20 +7,21 @@
       <h1 class="display-4 font-weight-normal">Punny headline</h1>
       <p class="lead font-weight-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple's marketing pages.</p>
       @if(Request::is('/'))
-        {{-- <form action="{{ route('cart.store') }}" method="POST">
+        <form action="{{ route('cart.store') }}" method="POST">
           @csrf 
           <input name="id" type="hidden" value="{{ $product->id }}"> 
           <input name="name" type="hidden" value="{{ $product->name }}"> 
           <input name="price" type="hidden" value="{{ $product->price }}"> 
-        </form> --}}
+          <button></button>
+        </form>
       @endif 
       <h5>£{{ Cart::total() }}</h5>
       <h5>Quantity: {{ Cart::count() }}</h5>
 
       {{-- INCREASE PRODUCT QUANTITY --}}
-      {{-- <form action="{{ route('cart.update', $product->rowId) }}" method="POST"> --}}
+      <form action="{{ route('cart.update', $product->rowId) }}" method="POST">
         @csrf
-        @method('UPDATE')
+        @method('PATCH')
         <div style="margin-top: -1rem;">
           <button class="bg-success text-white mt-1" style="margin-left: 1.35rem; width: 2rem;"><strong>+</strong></button>
         </div>
@@ -28,9 +29,9 @@
       {{-- END INCREASE PRODUCT QUANTITY --}}
 
       {{-- DECREASE PRODUCT QUANTITY --}}
-      {{-- <form action="{{ route('cart.decreaseQuantity', $product->rowId) }}" method="POST"> --}}
+      <form action="{{ route('cart.decreaseQuantity', $product->rowId) }}" method="POST">
         @csrf
-        @method('UPDATE')
+        @method('PATCH')
         <button class="bg-danger text-white" style="margin-left: 1.35rem; width: 2rem;"><strong>-</strong></button>
       </form>
       {{-- END DECREASE PRODUCT QUANTITY --}}
