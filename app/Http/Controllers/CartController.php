@@ -17,21 +17,16 @@ class CartController extends Controller
             $request->price 
             )
         ->associate('App\Product');
+
+        return back()->with('quantityIncreasedMessage', 'Quantity has been increased.'); 
     }
 
     public function update(Request $request, $rowId)
     {
         $product = Cart::get($rowId);
-        Cart::update($rowId, $product->qty + 1);
-        
-        return back()->with('quantityIncreasedMessage', 'Product quantity has been increased.');
-    }
 
-    public function decreaseQuantity(Request $request, $rowId)
-    {
-        $product = Cart::get($rowId);
         Cart::update($rowId, $product->qty - 1);
-        
-        return back()->with('quantityDecreasedMessage', 'Product quantity has been decreased.');
+
+        return back()->with('quantityDecreasedMessage', 'Quantity has been decreased.'); 
     }
 }
