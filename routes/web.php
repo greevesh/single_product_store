@@ -24,5 +24,5 @@ Route::get('/', 'ProductController@index')->name('product.index');
 // increases product quantity in the cart
 Route::post('/', 'CartController@store')->name('cart.store');
 
-// increases product quantity in the cart
-Route::post('/{rowId}', 'CartController@update')->name('cart.update'); 
+// decreases product quantity in the cart
+Route::patch('/{rowId}', 'CartController@update')->name('cart.update'); 

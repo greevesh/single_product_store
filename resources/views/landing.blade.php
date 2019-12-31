@@ -22,7 +22,7 @@
       {{-- DECREASE PRODUCT QUANTITY --}}
       {{-- <form action="{{ route('cart.update') }}" method="POST"> --}}
         @csrf
-        @method('UPDATE')
+        @method('PATCH')
         <button class="bg-danger text-white" style="width: 2rem;"><strong>-</strong></button>
       </form>
       {{-- END DECREASE PRODUCT QUANTITY --}}
@@ -33,8 +33,8 @@
          <p style="color: green">{{ session()->get('quantityIncreasedMessage') }}</p>
       @endif 
 
-      <h5>£{{ Cart::total() }}</h5>
-      <h5>{{ Cart::count() }} tubs</h5>
+      <h5 id="total-price" value="{{ Cart::total() }}">£{{ Cart::total() }}</h5>
+      <h5 id="product-count" value="{{ Cart::count() }}">{{ Cart::count() }} tub(s)</h5>
 
       <a class="btn btn-outline-secondary" href="{{ route('checkout.store') }}">Order now</a>
       <script src="https://www.paypal.com/sdk/js?client-id=AbuLwSBZC2p5XMwhs2m-GijPW-cbmlvYYknzjfPuiM8m9uzwBJxlbBORzGy9nN7CfxvydOZrWN-yTkgz"></script>
@@ -45,19 +45,20 @@
     <script>
       paypal.Buttons({
         createOrder: function(data, actions) {
-          // This function sets up the details of the transaction, including the amount and line item details.
+          // this function sets up the details of the transaction, including the amount and line item details
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: '59.99'
+                value: document.getElementById('total-price').value,
+                quantity: document.getElementById('product-count').value 
               }
             }]
           });
         },
         onApprove: function(data, actions) {
-      // This function captures the funds from the transaction.
+      // this function captures the funds from the transaction
       return actions.order.capture().then(function(details) {
-        // This function shows a transaction success message to your buyer.
+        // this function shows a transaction success message to your buyer
         alert('Transaction completed by ' + details.payer.name.given_name);
       });
     }
