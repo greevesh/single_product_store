@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Herbalife</title>
+    <title>Nuzest</title>
 
     {{-- import Bootstrap template --}}
     <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/product/">

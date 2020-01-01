@@ -21,12 +21,11 @@ class CartController extends Controller
         return back()->with('quantityIncreasedMessage', 'Quantity has been increased.'); 
     }
 
-    public function update(Request $request, $rowId)
+    public function update(Request $request, Product $rowId)
     {
-        $product = Cart::get($rowId);
-
+        $product = Cart::get($rowId->id);
         Cart::update($rowId, $product->qty - 1);
-
-        return back()->with('quantityDecreasedMessage', 'Quantity has been decreased.'); 
+        
+        return back()->with('quantityDecreasedMessage', 'Product quantity has been decreased.');
     }
 }

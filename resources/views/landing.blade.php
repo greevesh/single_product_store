@@ -20,7 +20,7 @@
       {{-- END INCREASE PRODUCT QUANTITY --}}
 
       {{-- DECREASE PRODUCT QUANTITY --}}
-      {{-- <form action="{{ route('cart.update') }}" method="POST"> --}}
+      {{-- <form action="{{ route('cart.update', $product->id) }}" method="POST"> --}}
         @csrf
         @method('PATCH')
         <button class="bg-danger text-white" style="width: 2rem;"><strong>-</strong></button>
@@ -42,7 +42,7 @@
 
     <div id="paypal-button-container"></div>
 
-    <script>
+    {{-- <script>
       paypal.Buttons({
         createOrder: function(data, actions) {
           // this function sets up the details of the transaction, including the amount and line item details
@@ -63,5 +63,5 @@
       });
     }
       }).render('#paypal-button-container');
-    </script>
+    </script> --}}
   @endsection

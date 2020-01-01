@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1feb7208c033b2927415ff9141076e1",
+    "content-hash": "3916e8e6f669dadfd21913c07a0dd07b",
     "packages": [
         {
             "name": "cartalyst/stripe",
