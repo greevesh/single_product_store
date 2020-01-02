@@ -17,8 +17,6 @@ class ProductController extends Controller
         $product = Product::find(1); 
 
         return view('landing', compact('product')); 
-
-        dd($product); 
     }
 
     /**

@@ -42,15 +42,14 @@
 
     <div id="paypal-button-container"></div>
 
-    {{-- <script>
+    <script>
       paypal.Buttons({
         createOrder: function(data, actions) {
           // this function sets up the details of the transaction, including the amount and line item details
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: document.getElementById('total-price').value,
-                quantity: document.getElementById('product-count').value 
+                value: '59.99'
               }
             }]
           });
@@ -63,5 +62,5 @@
       });
     }
       }).render('#paypal-button-container');
-    </script> --}}
+    </script>
   @endsection

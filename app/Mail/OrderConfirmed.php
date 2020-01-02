@@ -22,7 +22,7 @@ class OrderPlaced extends Mailable
     public function build()
     {
         return $this->from('nuzest.harrisongreeves.com')
-                    ->view('view.name')
+                    ->markdown('emails.orders.confirmed')
                     ->with([
                         'productName' => $this->product->name,
                         'productPrice' => $this->product->price, 
