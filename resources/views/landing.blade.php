@@ -9,32 +9,7 @@
      
       <br><br>
 
-      {{-- INCREASE PRODUCT QUANTITY --}}
-      <form action="{{ route('cart.store') }}" method="POST">
-        @csrf 
-        <input name="id" type="hidden" value="{{ $product->id }}"> 
-        <input name="name" type="hidden" value="{{ $product->name }}"> 
-        <input name="price" type="hidden" value="{{ $product->price }}"> 
-        <button class="bg-success text-white" style="width: 2rem;"><strong>+</strong></button>
-      </form>
-      {{-- END INCREASE PRODUCT QUANTITY --}}
-
-      {{-- DECREASE PRODUCT QUANTITY --}}
-      {{-- <form action="{{ route('cart.update', $product->id) }}" method="POST"> --}}
-        @csrf
-        @method('PATCH')
-        <button class="bg-danger text-white" style="width: 2rem;"><strong>-</strong></button>
-      </form>
-      {{-- END DECREASE PRODUCT QUANTITY --}}
-
-      <br><br>
-
-      @if(session()->has('quantityIncreasedMessage'))
-         <p style="color: green">{{ session()->get('quantityIncreasedMessage') }}</p>
-      @endif 
-
       <h5 id="total-price" value="{{ Cart::total() }}">£{{ Cart::total() }}</h5>
-      <h5 id="product-count" value="{{ Cart::count() }}">{{ Cart::count() }} tub(s)</h5>
 
       <a class="btn btn-outline-secondary" href="{{ route('checkout.store') }}">Order now</a>
       <script src="https://www.paypal.com/sdk/js?client-id=AbuLwSBZC2p5XMwhs2m-GijPW-cbmlvYYknzjfPuiM8m9uzwBJxlbBORzGy9nN7CfxvydOZrWN-yTkgz"></script>

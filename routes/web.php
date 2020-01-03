@@ -21,8 +21,5 @@ Route::post('/checkout', 'CheckoutController@store')->name('checkout.store');
 // enables product retrieval
 Route::get('/', 'ProductController@index')->name('product.index');
 
-// increases product quantity in the cart
+// places the product in the cart
 Route::post('/', 'CartController@store')->name('cart.store');
-
-// decreases product quantity in the cart
-Route::patch('/{rowId}', 'CartController@update')->name('cart.update'); 
