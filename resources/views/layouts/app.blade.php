@@ -11,7 +11,8 @@
 
     {{-- import Bootstrap template --}}
     <link rel="canonical" href="https://getbootstrap.com/docs/4.1/examples/product/">
-    {{-- importing our CSS file --}}
+
+    {{-- importing CSS file --}}
     <link rel="stylesheet" type="text/css" href="/css/app.css">
   </head>
 </html>

@@ -13,7 +13,7 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         Product::create([
-            'name' => 'Herbalife Protein Powder', 
+            'name' => 'Nuzest Protein Powder', 
             'price' => floatval('59.99')
         ]);
     }
