@@ -11,7 +11,11 @@
 
       <h5 id="total-price" value="{{ Cart::total() }}">£{{ Cart::total() }}</h5>
 
-      <a class="btn btn-outline-secondary" href="{{ route('checkout.store') }}">Order now</a>
+      <form action="{{ route('cart.store') }}" method="POST">
+        @csrf 
+        <button type="submit" class="btn btn-outline-secondary">Order now</button>
+      </form>
+
       <script src="https://www.paypal.com/sdk/js?client-id=AbuLwSBZC2p5XMwhs2m-GijPW-cbmlvYYknzjfPuiM8m9uzwBJxlbBORzGy9nN7CfxvydOZrWN-yTkgz"></script>
     </div>
 

@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
-class OrderPlaced extends Mailable
+class OrderConfirmed extends Mailable
 {
     use Queueable, SerializesModels;
 
