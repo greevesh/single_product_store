@@ -11,9 +11,9 @@
 |
 */
 
-Route::view('/', 'landing')->name('landing');
 Route::view('/checkout', 'checkout')->name('checkout');
 Route::view('/confirmation', 'confirmation')->name('confirmation');
+Route::view('/', 'landing')->name('landing'); 
 
 // enables backend form validation
 Route::post('/checkout', 'CheckoutController@store')->name('checkout.store'); 
