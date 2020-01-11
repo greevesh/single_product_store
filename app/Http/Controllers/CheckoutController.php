@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmed;
 
 class CheckoutController extends Controller
 {
@@ -26,24 +28,24 @@ class CheckoutController extends Controller
 
         try {
             $charge = $stripe->charges()->create([
-                // 'amount' => getNumbers()->get('newTotal') / 100,
                 'amount' => Cart::total(),
                 'currency' => 'GBP',
                 'source' => $request->stripeToken,
                 'description' => 'Thank you for your purchase.',
                 'receipt_email' => $request->email,
                 'metadata' => [
-                    // 'contents' => $contents,
                     'quantity' => Cart::count(),
                 ],
             ]);
 
-            $customer = $stripe->customers()->create(['email' => 'john@doe.com']);
+            $customer = $stripe->customers()->create(['email' => $request->email]);
 
-            Cart::destroy();
+            Mail::send(new OrderConfirmed);
 
             return redirect()->route('confirmation')
             ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.');
+
+            Cart::destroy();
 
         } 
             catch (CardErrorException $e) {
