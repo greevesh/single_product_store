@@ -1,19 +1,8 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+Route::view('/home', 'landing')->name('landing'); 
 Route::view('/checkout', 'checkout')->name('checkout');
 Route::view('/confirmation', 'confirmation')->name('confirmation');
-Route::view('/', 'landing')->name('landing'); 
 
 // enables backend form validation
 Route::post('/checkout', 'CheckoutController@store')->name('checkout.store'); 

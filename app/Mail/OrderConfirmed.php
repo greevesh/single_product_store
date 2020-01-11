@@ -7,25 +7,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Http\Request;
 
 class OrderConfirmed extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $product;
-
-    public function __construct(Product $product)
+    public function __construct()
     {
-        $this->product = $product; 
+     
     }
 
-    public function build()
+    public function build(Request $request)
     {
-        return $this->from('nuzest.harrisongreeves.com')
-                    ->markdown('emails.orders.confirmed')
+        return $this->from('admin@admin.com', 'name')
+                    ->to($request->email)
+                    ->markdown('emails.orders.email_conf')
                     ->with([
-                        'productName' => $this->product->name,
-                        'productPrice' => $this->product->price, 
+                        'productName' => 'Nuzest Protein Powder',
+                        'productPrice' => Cart::total(), 
                         'productQuantity' => Cart::count() 
                     ]);
     }
