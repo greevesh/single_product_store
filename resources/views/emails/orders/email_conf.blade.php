@@ -10,5 +10,5 @@ View Order
 @endcomponent
 
 Thanks,<br>
-Nuzest 
+{{ config('app.name') }}
 @endcomponent
