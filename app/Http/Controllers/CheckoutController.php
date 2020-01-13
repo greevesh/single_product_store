@@ -51,6 +51,8 @@ class CheckoutController extends Controller
         } 
             catch (CardErrorException $e) {
             return back()->withErrors('Error! ' . $e->getMessage());
+
+            Cart::destroy(); 
         }
     }
 }

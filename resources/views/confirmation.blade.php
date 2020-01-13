@@ -1,6 +1,8 @@
-<link rel="stylesheet" type="text/css" href="/css/app.css">
+@extends('layouts.app')
 
-@if(session()->has('paymentSuccessMessage'))
-    <h2 class="alert alert-success text-center">{{ session()->get('paymentSuccessMessage') }}</h2>
-    <h3 class="text-center"><a href="{{ route('landing') }}">Return Home</a></h3>
-@endif
+@section('content')
+    @if(session()->has('paymentSuccessMessage'))
+        <h2 class="mt-5 alert alert-success text-center">{{ session()->get('paymentSuccessMessage') }}</h2>
+        <h3 class="text-center"><a href="{{ route('landing') }}">Return Home</a></h3>
+    @endif
+@endsection 

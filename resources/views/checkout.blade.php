@@ -1,17 +1,16 @@
-<link rel="stylesheet" type="text/css" href="/css/app.css">
+@extends('layouts.app')
 
-<!-- Stripe integration -->
-<script src="https://js.stripe.com/v3/"></script>
+@section('content')
+    <!-- Stripe integration -->
+    <script src="https://js.stripe.com/v3/"></script>
 
     <title>Checkout</title>
-
-    <body class="bg-light">
 
     <div class="container">
 
         {{-- BILLING INFO --}}
-        <div class="col-md-8 order-md-1">
-        <h4 class="mb-3">Billing Information</h4>
+        <div style="margin-top: 3%;">
+        <h4 style="font-size: 1.8rem" class="mb-3">Billing Information</h4>
 
         <form action="{{ route('checkout.store') }}" method="POST" class="needs-validation" id="payment-form" novalidate>
             @csrf 
@@ -334,7 +333,7 @@
                 <br>
                 <hr class="mb-4">
                 <p id="no-products"></p>
-                <button id="submit-payment" class="btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
+                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="mb-5 btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
             </form>
             <!-- END STRIPE ELEMENTS -->
             {{-- END BILLING INFO --}}
@@ -431,6 +430,4 @@
         }
         })();
     </script>
-
-    </body>
-    </html>
+@endsection
