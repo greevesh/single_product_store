@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Srmklive\PayPal\Services\ExpressCheckout;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmed;
 
 class PayPalCheckoutController extends Controller
 {
