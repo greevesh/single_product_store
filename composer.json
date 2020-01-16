@@ -9,14 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "braintree/braintree_php": "^4.6",
         "cartalyst/stripe-laravel": "^11.0",
         "facade/ignition": "^1.13",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
         "hardevine/shoppingcart": "^2.7",
         "laravel/framework": "^6.2",
-        "laravel/tinker": "^2.0",
-        "srmklive/paypal": "~1.0"
+        "laravel/tinker": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",
