@@ -14,11 +14,4 @@ class CartController extends Controller
         
         return redirect()->route('landing')->with('quantityIncreasedMessage', 'Product quantity has been increased.');
     }
-
-    public function decreaseProductQuantity()
-    {
-        Cart::destroy();
-        
-        return redirect()->route('landing')->with('quantityDecreasedMessage', 'Product quantity has been decreased.');
-    }
 }

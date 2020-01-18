@@ -13,35 +13,15 @@
 
       <h5 id="total-price">£{{ Cart::total() }}</h5>
 
-      {{-- <form action="{{ route('cart.store') }}" method="POST"> --}}
+      <h5>Quantity: {{ Cart::count() }}</h5>
+
+      <form action="{{ route('cart.store') }}" method="POST">
         @csrf 
         <button>+</button>
-      </form>
-
-      <form action="{{ route('cart.decreaseProductQuantity') }}" method="POST">
-        @csrf 
-        <button>-</button>
       </form>
 
       <a href="{{ route('checkout') }}" style="color: #fff; background-color: royalblue" class="btn"><b>Order now</b></a>
     </div>
 
     <div id="dropin-container"></div>
-
-    <button id="submit-button">Request payment method</button>
-
-    <script>
-      var button = document.querySelector('#submit-button');
-
-      braintree.dropin.create({
-        authorization: 'CLIENT_TOKEN_FROM_SERVER',
-        container: '#dropin-container'
-      }, function (createErr, instance) {
-        button.addEventListener('click', function () {
-          instance.requestPaymentMethod(function (err, payload) {
-          // submit payload.nonce to your server
-          });
-        });
-      });
-    </script>
   @endsection
