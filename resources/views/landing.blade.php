@@ -11,16 +11,20 @@
      
       <br><br>
 
-      <h5 id="total-price">£{{ Cart::total() }}</h5>
+      <h5 id="total-price"><i>Price: £{{ Cart::total() }}</i></h5>
 
-      <h5>Quantity: {{ Cart::count() }}</h5>
+      <h5><i>Quantity: {{ Cart::count() }}</i></h5>
 
       <form action="{{ route('cart.store') }}" method="POST">
         @csrf 
-        <button>+</button>
+        <button style="background-color: mediumblue; color: white;">+</button>
       </form>
 
-      <a href="{{ route('checkout') }}" style="color: #fff; background-color: royalblue" class="btn"><b>Order now</b></a>
+      @if(session()->has('quantityIncreasedMessage'))
+        <p style="color: green;">{{ session()->get('quantityIncreasedMessage') }}</p>
+      @endif 
+
+      <a href="{{ route('checkout') }}" style="color: #fff; background-color: red" class="btn"><b>Order now</b></a>
     </div>
 
     <div id="dropin-container"></div>
