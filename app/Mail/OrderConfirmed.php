@@ -20,7 +20,7 @@ class OrderConfirmed extends Mailable
 
     public function build(Request $request)
     {
-        return $this->from('nuzest.harrisongreeves.com', 'Nuzest')
+        return $this->from(env('MAIL_FROM_ADDRESS'), 'Nuzest')
                     ->to($request->email)
                     ->markdown('emails.orders.email_conf')
                     ->with([

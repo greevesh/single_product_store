@@ -433,19 +433,4 @@
         })();
     </script>
 
-    <?php 
-        use App\Braintree; 
-    ?>
-
-<script>
-    var button = document.querySelector('#submit-button');
-    var clientToken = '<?php echo($gateway->clientToken()->generate()); ?>'; 
-
-    braintree.dropin.create({
-    authorization: CLIENT_TOKEN_FROM_SERVER,
-    container: '#dropin-container'
-    }).then(function (instance) {
-    /* ... */
-    });
-  </script>
 @endsection
