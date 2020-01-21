@@ -340,7 +340,6 @@
             {{-- END BILLING INFO --}}
 
             <div id="dropin-container"></div>
-
             <button id="submit-button">Request payment method</button>
 
         </form> 
@@ -359,39 +358,22 @@
     {{-- END ALERT: CART IS EMPTY --}}
 
 <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 <script src="https://js.braintreegateway.com/web/3.57.0/js/hosted-fields.min.js"></script>
 <script>
-  var form = document.querySelector('#my-sample-form');
-  var submit = document.querySelector('input[type="submit"]');
+    var button = document.querySelector('#submit-button');
 
-  braintree.client.create({
-    authorization: 'sandbox_csv9z8wd_7x6bffskqkpyhp6g'
-  }, function (clientErr, clientInstance) {
-    if (clientErr) {
-      console.error(clientErr);
-      return;
-    }
-
-    var options = {
-    client: clientInstance,
-    styles: {
-      /* ... */
-    },
-    fields: {
-      /* ... */
-    }
-  };
-
-  braintree.hostedFields.create(options, function (hostedFieldsErr, hostedFieldsInstance) {
-    if (hostedFieldsErr) {
-      // Handle error in Hosted Fields creation
-      return;
-    }
-
-    // Use the Hosted Fields instance here to tokenize a card
-  });
-});
-</script>
+    braintree.dropin.create({
+      authorization: 'sandbox_csv9z8wd_7x6bffskqkpyhp6g',
+      container: '#dropin-container'
+    }, function (createErr, instance) {
+      button.addEventListener('click', function () {
+        instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+          // Submit payload.nonce to your server
+        });
+      });
+    });
+  </script>
 
     <script>
         (function() {
