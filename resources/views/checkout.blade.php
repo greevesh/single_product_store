@@ -358,19 +358,6 @@
     @endif
     {{-- END ALERT: CART IS EMPTY --}}
 
-    <form action="/" id="my-sample-form" method="post">
-        <label for="card-number">Card Number</label>
-        <div id="card-number"></div>
-  
-        <label for="cvv">CVV</label>
-        <div id="cvv"></div>
-  
-        <label for="expiration-date">Expiration Date</label>
-        <div id="expiration-date"></div>
-  
-        <input type="submit" value="Pay" disabled />
-      </form>
-
 <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
 <script src="https://js.braintreegateway.com/web/3.57.0/js/hosted-fields.min.js"></script>
 <script>
@@ -378,68 +365,32 @@
   var submit = document.querySelector('input[type="submit"]');
 
   braintree.client.create({
-    authorization: 'CLIENT_AUTHORIZATION'
+    authorization: 'sandbox_csv9z8wd_7x6bffskqkpyhp6g'
   }, function (clientErr, clientInstance) {
     if (clientErr) {
       console.error(clientErr);
       return;
     }
 
-    // This example shows Hosted Fields, but you can also use this
-    // client instance to create additional components here, such as
-    // PayPal or Data Collector.
+    var options = {
+    client: clientInstance,
+    styles: {
+      /* ... */
+    },
+    fields: {
+      /* ... */
+    }
+  };
 
-    braintree.hostedFields.create({
-      client: clientInstance,
-      styles: {
-        'input': {
-          'font-size': '14px'
-        },
-        'input.invalid': {
-          'color': 'red'
-        },
-        'input.valid': {
-          'color': 'green'
-        }
-      },
-      fields: {
-        number: {
-          selector: '#card-number',
-          placeholder: '4111 1111 1111 1111'
-        },
-        cvv: {
-          selector: '#cvv',
-          placeholder: '123'
-        },
-        expirationDate: {
-          selector: '#expiration-date',
-          placeholder: '10/2019'
-        }
-      }
-    }, function (hostedFieldsErr, hostedFieldsInstance) {
-      if (hostedFieldsErr) {
-        console.error(hostedFieldsErr);
-        return;
-      }
+  braintree.hostedFields.create(options, function (hostedFieldsErr, hostedFieldsInstance) {
+    if (hostedFieldsErr) {
+      // Handle error in Hosted Fields creation
+      return;
+    }
 
-      submit.removeAttribute('disabled');
-
-      form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
-          if (tokenizeErr) {
-            console.error(tokenizeErr);
-            return;
-          }
-
-          // If this was a real integration, this is where you would
-          // send the nonce to your server.
-          console.log('Got a nonce: ' + payload.nonce);
-        });
-      }, false);
-    });
+    // Use the Hosted Fields instance here to tokenize a card
   });
+});
 </script>
 
     <script>
@@ -519,31 +470,5 @@
         }
         })();
     </script>
-
-    <?php 
-        $gateway = new Braintree_Gateway ([
-        'environment' => 'sandbox',
-        'merchantId' => '7x6bffskqkpyhp6g',
-        'publicKey' => 'bgfjdhhntchd53rb',
-        'privateKey' => '151eca81838963e10f3e5c518634d31e'
-        ]); 
-
-        ?><span id="clientToken"><?php $clientToken = $gateway->clientToken()->generate(); ?></span>
-
-    {{-- <script>
-        var button = document.querySelector('#submit-button');
-        var clientToken = document.getElementById('clientToken'); 
-
-        braintree.dropin.create({
-        authorization: 'CLIENT_TOKEN_FROM_SERVER',
-        container: '#dropin-container'
-        }, function (createErr, instance) {
-        button.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (err, payload) {
-            // Submit payload.nonce to your server
-            });
-        });
-        });
-    </script> --}}
 
 @endsection
