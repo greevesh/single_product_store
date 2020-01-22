@@ -318,29 +318,14 @@
                 </div>
             </div>
 
-            <!-- STRIPE ELEMENTS -->
-            <form action="/charge" method="post" id="payment-form">
-                <div class="form-row">
-                  <label class="ml-1" for="card-element">
-                    Credit or debit card
-                  </label>
-                  <div id="card-element">
-                    <!-- a Stripe Element will be inserted here. -->
-                  </div>
-              
-                  <!-- Used to display form errors. -->
-                  <div id="card-errors" role="alert"></div>
-                </div>
-                <br>
-                <hr class="mb-4">
-                <p id="no-products"></p>
-                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="mb-5 btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
-            </form>
-            <!-- END STRIPE ELEMENTS -->
-            {{-- END BILLING INFO --}}
-
             <div id="dropin-container"></div>
             <button id="submit-button">Request payment method</button>
+
+            <br><br>
+
+                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="mb-5 btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
+            </form>
+            {{-- END BILLING INFO --}}
 
         </form> 
         </div>
@@ -361,7 +346,7 @@
 <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
 <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 <script>
-    var button = document.querySelector('#submit-button');
+    var button = document.querySelector('#submit-payment');
 
     braintree.dropin.create({
         authorization: 'sandbox_csv9z8wd_7x6bffskqkpyhp6g', 
@@ -375,4 +360,5 @@
     });
 </script>
 {{-- END BRAINTREE INTEGRATION --}}
+
 @endsection

@@ -9,6 +9,18 @@ use App\Mail\OrderConfirmed;
 
 class CheckoutController extends Controller
 {
+    public function index()
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => env('BT_ENVIRONMENT'),
+            'merchantId' => env('BT_MERCHANT_ID'),
+            'publicKey' => env('BT_PUBLIC_KEY'),
+            'privateKey' => env('BT_PRIVATE_KEY')
+        ]);
+
+        return view('checkout'); 
+    }
+
     public function store(Request $request)
     {
         request()->validate([
