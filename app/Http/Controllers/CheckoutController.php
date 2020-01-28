@@ -6,11 +6,19 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmed;
+use Braintree; 
 
 class CheckoutController extends Controller
 {
     public function store(Request $request)
     {
+        $gateway = new Braintree\Gateway([
+            'environment' => config('services.braintree.environment'),
+            'merchantId' => config('services.braintree.merchantId'),
+            'publicKey' => config('services.braintree.publicKey'),
+            'privateKey' => config('services.braintree.privateKey')
+        ]);
+
         request()->validate([
             'name' => 'required|min:5',
             'email' => 'required|min:10',
@@ -24,13 +32,6 @@ class CheckoutController extends Controller
         $amount = Cart::total();
         $quantity = Cart::count(); 
         $nonce = $request->tokenizationKey;
-
-        $gateway = new BraintreeController([
-            'environment' => env('BT_ENVIRONMENT'),
-            'merchantId' => env('BT_MERCHANT_ID'),
-            'publicKey' => env('BT_PUBLIC_KEY'),
-            'privateKey' => env('BT_PRIVATE_KEY')
-        ]);
         
         $result = $gateway->transaction()->sale([
             'amount' => $amount,
