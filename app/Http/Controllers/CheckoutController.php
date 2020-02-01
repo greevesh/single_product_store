@@ -30,26 +30,17 @@ class CheckoutController extends Controller
         ]);
 
         $amount = Cart::total();
-        $quantity = Cart::count(); 
-        $nonce = $request->tokenizationKey;
+        $paymentMethodNonce = $request->paymentMethodNonce;
         
         $result = $gateway->transaction()->sale([
-            'amount' => $amount,
-            'quantity' => $quantity,
-            'nonce' => $nonce,
-            'customerDetails' => [
-                'name' => $request->name,
-                'email' => $request->email,
-                'address' => $request->address, 
-                'country' => $request->country,
-                'postcode' => $request->postcode
-            ],
+            'amount' => $amount, 
+            'paymentMethodNonce' => $paymentMethodNonce,         
             'options' => [
                 'submitForSettlement' => true
             ]
         ]);
         
-        if ($result->success || !is_null($result->transaction)) 
+        if ($result->success or !is_null($result->transaction)) 
         {
             $transaction = $result->transaction;
             return redirect()->route('confirmation')
@@ -67,6 +58,8 @@ class CheckoutController extends Controller
             {
                 $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
             }
+
+            return $errorString;
         }
         }
     }
