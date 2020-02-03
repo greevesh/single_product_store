@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Stripe integration -->
-    <script src="https://js.stripe.com/v3/"></script>
-
+   
     <title>Checkout</title>
 
     <div class="container">
@@ -318,7 +316,7 @@
             </div>
 
             <div id="dropin-container"></div>
-            <input name="paymentMethodNonce" id="paymentMethodNonce" type="hidden" value="">
+            <input name="tokenizationKey" id="tokenizationKey" type="hidden" value="">
             <button id="submit-button">Request payment method</button>
 
             <br><br>
@@ -347,17 +345,17 @@
 <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 <script>
     var button = document.querySelector('#submit-payment');
-    var paymentMethodNonce = 'sandbox_csv9z8wd_7x6bffskqkpyhp6g';
+    var tokenizationKey = 'sandbox_csv9z8wd_7x6bffskqkpyhp6g';
 
     braintree.dropin.create({
-        authorization: paymentMethodNonce, 
+        authorization: tokenizationKey, 
         container: '#dropin-container'
     }, function (createErr, instance) {
         button.addEventListener('click', function () {
         instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
             // submit payload.nonce to your server
-            document.getElementById('paymentMethodNonce').value = paymentMethodNonce;
-            console.log(paymentMethodNonce); 
+            document.getElementById('tokenizationKey').value = tokenizationKey;
+            console.log(tokenizationKey); 
         });
         });
     });
