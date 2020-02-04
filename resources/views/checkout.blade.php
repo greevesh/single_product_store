@@ -317,6 +317,7 @@
 
             <div id="dropin-container"></div>
             <input name="tokenizationKey" id="tokenizationKey" type="hidden" value="">
+            <input id="nonce" name="paymentMethodNonce" type="hidden">
             <button id="submit-button">Request payment method</button>
 
             <br><br>
@@ -341,7 +342,7 @@
     {{-- END ALERT: CART IS EMPTY --}}
 
 {{-- BRAINTREE INTEGRATION --}}
-<script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
+{{-- <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script> --}}
 <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 <script>
     var button = document.querySelector('#submit-payment');
@@ -354,6 +355,7 @@
         button.addEventListener('click', function () {
         instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
             // submit payload.nonce to your server
+            document.querySelector('#nonce').value = payload.nonce;
             document.getElementById('tokenizationKey').value = tokenizationKey;
             console.log(tokenizationKey); 
         });

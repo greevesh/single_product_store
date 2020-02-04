@@ -19,22 +19,22 @@ class CheckoutController extends Controller
             'privateKey' => config('services.braintree.privateKey')
         ]);
 
-        request()->validate([
-            'name' => 'required|min:5',
-            'email' => 'required|min:10',
-            'address' => 'required|min:10',
-            'address2',
-            'country' => 'required',
-            'postcode' => 'required',
-            'card-name' => 'required'
-        ]);
+        // request()->validate([
+        //     'name' => 'required|min:5',
+        //     'email' => 'required|min:10',
+        //     'address' => 'required|min:10',
+        //     'address2',
+        //     'country' => 'required',
+        //     'postcode' => 'required',
+        //     'card-name' => 'required'
+        // ]);
 
         $amount = Cart::total();
-        $paymentMethodNonce = $request->paymentMethodNonce;
+        $tokenizationKey = $request->tokenizationKey;
         
         $result = $gateway->transaction()->sale([
             'amount' => $amount, 
-            'paymentMethodNonce' => $paymentMethodNonce,         
+            'tokenizationKey' => $tokenizationKey,         
             'options' => [
                 'submitForSettlement' => true
             ]
