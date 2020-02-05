@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+    <!-- Stripe integration -->
+    <script src="https://js.stripe.com/v3/"></script>
    
     <title>Checkout</title>
 
@@ -315,16 +318,28 @@
                 </div>
             </div>
 
-            <div id="dropin-container"></div>
-            <input name="tokenizationKey" id="tokenizationKey" type="hidden" value="">
-            <input id="nonce" name="paymentMethodNonce" type="hidden">
-            <button id="submit-button">Request payment method</button>
+            <!-- STRIPE ELEMENTS -->
+            <form action="/charge" method="post" id="payment-form">
+                <div class="form-row">
+                  <label class="ml-1" for="card-element">
+                    Credit or debit card
+                  </label>
+                  <div id="card-element">
+                    <!-- a Stripe Element will be inserted here. -->
+                  </div>
+              
+                  <!-- Used to display form errors. -->
+                  <div id="card-errors" role="alert"></div>
+                </div>
+                <br>
+                <hr class="mb-4">
+                <p id="no-products"></p>
+                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
+            </form>
+            {{-- END STRIPE ELEMENTS --}}
+            {{-- END BILLING INFO --}}
 
             <br><br>
-
-                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="mb-5 btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
-            </form>
-            {{-- END BILLING INFO --}}
 
         </form> 
         </div>
@@ -341,9 +356,85 @@
     @endif
     {{-- END ALERT: CART IS EMPTY --}}
 
+    <script>
+        (function() {
+        // creates a Stripe client
+        var stripe = Stripe('pk_test_9dn1vt3i0j0Q5GZdwAXn9iUs00iMziQDyD');
+
+        // creates an instance of Elements
+        var elements = stripe.elements();
+
+        var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+            color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: 'red',
+            iconColor: 'red'
+        }
+        };
+
+        // creates an instance of the card Element
+        var card = elements.create('card', { style: style, hidePostalCode: true });
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // handles real-time validation errors from the card Element
+        card.addEventListener('change', function(event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        }
+        });
+
+        // handles form submission.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // disables the submit button to prevent repeated clicks
+        document.getElementById('submit-payment').disabled = true; 
+
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+            // informs the user if there was an error
+            // enables the submit button if validation fails
+            document.getElementById('submit-payment').disabled = false;
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+            } else {
+            // sends the token to the server
+            stripeTokenHandler(result.token);
+            }
+        });
+        });
+
+        // submits the form with the token ID
+        function stripeTokenHandler(token) {
+        // inserts the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // submits the form
+        form.submit();
+        }
+        })();
+    </script>
+
 {{-- BRAINTREE INTEGRATION --}}
 {{-- <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script> --}}
-<script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
+{{-- <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
 <script>
     var button = document.querySelector('#submit-payment');
     var tokenizationKey = 'sandbox_csv9z8wd_7x6bffskqkpyhp6g';
@@ -361,7 +452,7 @@
         });
         });
     });
-</script>
+</script> --}}
 {{-- END BRAINTREE INTEGRATION --}}
 
 @endsection

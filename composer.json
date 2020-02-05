@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "braintree/braintree_php": "^4.6",
+        "cartalyst/stripe-laravel": "^11.0",
         "facade/ignition": "^1.13",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.5",
