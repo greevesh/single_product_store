@@ -359,7 +359,7 @@
     <script>
         (function() {
         // creates a Stripe client
-        var stripe = Stripe('pk_test_9dn1vt3i0j0Q5GZdwAXn9iUs00iMziQDyD');
+        var stripe = Stripe('pk_test_wrradQC7dUkhIZF7csawxhEi00xU1Bhr4s');
 
         // creates an instance of Elements
         var elements = stripe.elements();

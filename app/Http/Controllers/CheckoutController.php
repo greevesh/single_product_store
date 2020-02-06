@@ -64,9 +64,10 @@ class CheckoutController extends Controller
         // }
         // }
 
-        // storing Stripe data
+        // instantiating Stripe
         $stripe = new Stripe();
-        $stripe = Stripe::make('sk_test_IkkC8sO6532nzHtuCLayswle00ny0pBcZ4');
+        // creating the secret key
+        $stripe = Stripe::make('sk_test_ldIhJYw4QNiSoUcGtU4uJUu200JupOKhbk');
 
         try {
             $charge = Stripe::charges()->create([
