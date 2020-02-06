@@ -6,20 +6,27 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmed;
-// use Braintree; 
+use Braintree; 
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 
 class CheckoutController extends Controller
 {
+    public function index()
+    {
+        $gateway = new Braintree\Gateway([
+        'environment' => config('services.braintree.environment'),
+        'merchantId' => config('services.braintree.merchantId'),
+        'publicKey' => config('services.braintree.publicKey'),
+        'privateKey' => config('services.braintree.privateKey')
+        ]);
+
+        $clientToken = $gateway->clientToken()->generate();
+
+        return view('checkout', compact('clientToken'));
+    }
+
     public function store(Request $request)
     {
-        // $gateway = new Braintree\Gateway([
-        //     'environment' => config('services.braintree.environment'),
-        //     'merchantId' => config('services.braintree.merchantId'),
-        //     'publicKey' => config('services.braintree.publicKey'),
-        //     'privateKey' => config('services.braintree.privateKey')
-        // ]);
-
         // request()->validate([
         //     'name' => 'required|min:5',
         //     'email' => 'required|min:10',

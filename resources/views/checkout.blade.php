@@ -342,6 +342,11 @@
             <br><br>
 
         </form> 
+
+            <div id="dropin-container"></div>
+            <button id="submit-button">Request payment method</button>
+
+            <div id="paypal-button"></div>
         </div>
     </div>
     </div>
@@ -454,5 +459,30 @@
     });
 </script> --}}
 {{-- END BRAINTREE INTEGRATION --}}
+
+    <!-- Load PayPal's checkout.js Library. -->
+    {{-- <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4 log-level="warn"></script>
+    <!-- Load the client component. -->
+    <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
+    <!-- Load the PayPal Checkout component. -->
+    <script src="https://js.braintreegateway.com/web/3.57.0/js/paypal-checkout.min.js"></script> --}}
+
+    <script src="https://js.braintreegateway.com/web/dropin/1.13.0/js/dropin.min.js"></script>
+
+    <script>
+        var button = document.querySelector('#submit-button');
+        clientToken = '{{ $clientToken }}';
+
+        braintree.dropin.create({
+        authorization: clientToken,
+        container: '#dropin-container'
+        }, function (createErr, instance) {
+        button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (err, payload) {
+            // Submit payload.nonce to your server
+            });
+        });
+        });
+    </script>
 
 @endsection
