@@ -343,10 +343,24 @@
 
         </form> 
 
-            <div id="dropin-container"></div>
-            <button id="submit-button">Request payment method</button>
+        <br>
 
-            <div id="paypal-button"></div>
+        @if ($paypalToken)
+            <div>or</div>
+            <div>
+                <h2>Pay with PayPal</h2>
+
+                <form method="POST" action="{{ route('checkout.paypal') }}">
+                    @csrf
+                    <div id="dropin-container"></div>
+
+                    <input id="nonce" name="nonce" type="hidden">
+                    <button style="color: #fff; background-color: royalblue" id="paypal-submit" class="btn btn-lg btn-block">Submit Payment</button>
+                </form>
+            </div>
+        @endif
+
+            <br><br>
         </div>
     </div>
     </div>
@@ -437,52 +451,27 @@
         })();
     </script>
 
-{{-- BRAINTREE INTEGRATION --}}
-{{-- <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script> --}}
-{{-- <script src="https://js.braintreegateway.com/web/dropin/1.21.0/js/dropin.min.js"></script>
-<script>
-    var button = document.querySelector('#submit-payment');
-    var tokenizationKey = 'sandbox_csv9z8wd_7x6bffskqkpyhp6g';
-
-    braintree.dropin.create({
-        authorization: tokenizationKey, 
-        container: '#dropin-container'
-    }, function (createErr, instance) {
-        button.addEventListener('click', function () {
-        instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-            // submit payload.nonce to your server
-            document.querySelector('#nonce').value = payload.nonce;
-            document.getElementById('tokenizationKey').value = tokenizationKey;
-            console.log(tokenizationKey); 
-        });
-        });
-    });
-</script> --}}
-{{-- END BRAINTREE INTEGRATION --}}
-
-    <!-- Load PayPal's checkout.js Library. -->
-    {{-- <script src="https://www.paypalobjects.com/api/checkout.js" data-version-4 log-level="warn"></script>
-    <!-- Load the client component. -->
-    <script src="https://js.braintreegateway.com/web/3.57.0/js/client.min.js"></script>
-    <!-- Load the PayPal Checkout component. -->
-    <script src="https://js.braintreegateway.com/web/3.57.0/js/paypal-checkout.min.js"></script> --}}
-
-    <script src="https://js.braintreegateway.com/web/dropin/1.13.0/js/dropin.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
 
     <script>
-        var button = document.querySelector('#submit-button');
-        clientToken = '{{ $clientToken }}';
-
+        var button = document.querySelector('#paypal-submit');
         braintree.dropin.create({
-        authorization: clientToken,
-        container: '#dropin-container'
-        }, function (createErr, instance) {
-        button.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (err, payload) {
-            // Submit payload.nonce to your server
+            authorization: '{{ $paypalToken }}',
+            container: '#dropin-container',
+            paypal: {
+          flow: 'checkout',
+          amount: '{{ Cart::total() }}',
+          currency: 'GBP'
+            }
+        },
+        function (createErr, instance){
+            button.addEventListener('click', function () {
+          instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+          // Submit payload.nonce to your server
+          var nonce = payload.nonce;
+          document.getElementById('nonce').value = nonce;   
+          })
             });
         });
-        });
     </script>
-
 @endsection

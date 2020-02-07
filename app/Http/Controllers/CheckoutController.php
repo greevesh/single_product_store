@@ -20,9 +20,17 @@ class CheckoutController extends Controller
         'privateKey' => config('services.braintree.privateKey')
         ]);
 
-        $clientToken = $gateway->clientToken()->generate();
+        $paypalToken = $gateway->clientToken()->generate();
+        // try {
+        //     $result = $gateway->paymentMethodNonce()->create();
+        //     $nonce = $result->paymentMethodNonce->nonce;
+        // } 
+        // catch(Braintree_Exception_NotFound $e)
+        // {
+        //     echo $e->getMessage();
+        // }
 
-        return view('checkout', compact('clientToken'));
+        return view('checkout', compact('paypalToken'));
     }
 
     public function store(Request $request)
@@ -36,40 +44,6 @@ class CheckoutController extends Controller
         //     'postcode' => 'required',
         //     'card-name' => 'required'
         // ]);
-
-        // $amount = Cart::total();
-        // $tokenizationKey = $request->tokenizationKey;
-        
-        // $result = $gateway->transaction()->sale([
-        //     'amount' => $amount, 
-        //     'tokenizationKey' => $tokenizationKey,         
-        //     'options' => [
-        //         'submitForSettlement' => true
-        //     ]
-        // ]);
-        
-        // if ($result->success or !is_null($result->transaction)) 
-        // {
-        //     $transaction = $result->transaction;
-        //     return redirect()->route('confirmation')
-        //     ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
-        //                                      A confirmation email has also been sent.');
-
-        //     Mail::send(new OrderConfirmed);
-        //     Cart::destroy(); 
-        // } 
-        // else 
-        // {
-        //     $errorString = "";
-        
-        //     foreach($result->errors->deepAll() as $error) 
-        //     {
-        //         $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
-        //     }
-
-        //     return $errorString;
-        // }
-        // }
 
         // instantiating Stripe
         $stripe = new Stripe();
@@ -105,4 +79,49 @@ class CheckoutController extends Controller
             return back()->withErrors('Error! ' . $e->getMessage());
         }
     }
-}
+
+    public function paypal(Request $request)
+    {
+        $gateway = new Braintree\Gateway([
+            'environment' => config('services.braintree.environment'),
+            'merchantId' => config('services.braintree.merchantId'),
+            'publicKey' => config('services.braintree.publicKey'),
+            'privateKey' => config('services.braintree.privateKey')
+            ]); 
+
+        $amount = Cart::total();
+        $nonce = $request->nonce; 
+
+        // dd($nonce);
+        
+        $result = $gateway->transaction()->sale([
+            'amount' => $amount, 
+            'nonce' => $nonce,         
+            'options' => [
+                'submitForSettlement' => true
+            ]
+        ]);
+        
+        if ($result->success or !is_null($result->transaction)) 
+        {
+            $transaction = $result->transaction;
+            return redirect()->route('confirmation')
+            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
+                                             A confirmation email has also been sent.');
+
+            Mail::send(new OrderConfirmed);
+            Cart::destroy(); 
+        } 
+        else 
+        {
+            $errorString = "";
+        
+            foreach($result->errors->deepAll() as $error) 
+            {
+                $errorString .= 'Error: ' . $error->code . ": " . $error->message . "\n";
+            }
+
+            return $errorString;
+        }
+        }
+    }

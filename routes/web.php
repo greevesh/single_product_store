@@ -9,3 +9,4 @@ Route::get('/checkout', 'CheckoutController@index')->name('checkout');
 Route::post('/checkout', 'CheckoutController@store')->name('checkout.store'); 
 // places the product in the cart
 Route::post('/', 'CartController@store')->name('cart.store'); 
+Route::post('paypal-checkout', 'CheckoutController@paypal')->name('checkout.paypal'); 
