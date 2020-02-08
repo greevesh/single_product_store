@@ -13,7 +13,7 @@
         <div style="margin-top: 3%;">
         <h4 style="font-size: 1.8rem" class="mb-3">Billing Information</h4>
 
-        <form action="{{ route('checkout.store') }}" method="POST" class="needs-validation" id="payment-form" novalidate>
+        <form action="{{ route('checkout.store') }}" method="POST" class="needs-validation" id="stripe-form" novalidate>
             @csrf 
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -319,7 +319,6 @@
             </div>
 
             <!-- STRIPE ELEMENTS -->
-            <form action="/charge" method="post" id="payment-form">
                 <div class="form-row">
                   <label class="ml-1" for="card-element">
                     Credit or debit card
@@ -334,16 +333,12 @@
                 <br>
                 <hr class="mb-4">
                 <p id="no-products"></p>
-                <button style="color: #fff; background-color: royalblue" id="submit-payment" class="btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
+                <button style="color: #fff; background-color: green" id="stripe-button" class="btn btn-lg btn-block" type="submit"><b>Submit Payment</b></button>
             </form>
             {{-- END STRIPE ELEMENTS --}}
             {{-- END BILLING INFO --}}
 
             <br><br>
-
-        </form> 
-
-        <br>
 
         @if ($paypalToken)
             <div>or</div>
@@ -355,7 +350,7 @@
                     <div id="dropin-container"></div>
 
                     <input id="nonce" name="nonce" type="hidden">
-                    <button style="color: #fff; background-color: royalblue" id="paypal-submit" class="btn btn-lg btn-block">Submit Payment</button>
+                    <button style="color: #fff; background-color: royalblue" id="paypal-button" class="btn btn-lg btn-block">Submit Payment</button>
                 </form>
             </div>
         @endif
@@ -368,7 +363,8 @@
     {{-- ALERT: CART IS EMPTY --}}
     @if(Cart::count() == 0)
         <script>
-            document.getElementById('submit-payment').disabled = true;
+            document.getElementById('stripe-button').disabled = true;
+            document.getElementById('paypal-button').disabled = true;
             document.getElementById('no-products').textContent = 'Your cart is empty!';
             document.getElementById('no-products').className = 'w-25 alert alert-danger';
         </script>
@@ -414,18 +410,18 @@
         });
 
         // handles form submission.
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function(event) {
+        var stripeForm = document.getElementById('stripe-form');
+        stripeForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
         // disables the submit button to prevent repeated clicks
-        document.getElementById('submit-payment').disabled = true; 
+        document.getElementById('stripe-button').disabled = true; 
 
         stripe.createToken(card).then(function(result) {
             if (result.error) {
             // informs the user if there was an error
             // enables the submit button if validation fails
-            document.getElementById('submit-payment').disabled = false;
+            document.getElementById('stripe-button').disabled = false;
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
             } else {
@@ -438,15 +434,14 @@
         // submits the form with the token ID
         function stripeTokenHandler(token) {
         // inserts the token ID into the form so it gets submitted to the server
-        var form = document.getElementById('payment-form');
         var hiddenInput = document.createElement('input');
         hiddenInput.setAttribute('type', 'hidden');
         hiddenInput.setAttribute('name', 'stripeToken');
         hiddenInput.setAttribute('value', token.id);
-        form.appendChild(hiddenInput);
+        stripeForm.appendChild(hiddenInput);
 
         // submits the form
-        form.submit();
+        stripeForm.submit();
         }
         })();
     </script>
@@ -454,7 +449,8 @@
     <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
 
     <script>
-        var button = document.querySelector('#paypal-submit');
+        var paypalForm = document.getElementById('paypal-form')
+        var paypalButton = document.getElementById('paypal-button');
         braintree.dropin.create({
             authorization: '{{ $paypalToken }}',
             container: '#dropin-container',
@@ -465,13 +461,14 @@
             }
         },
         function (createErr, instance){
-            button.addEventListener('click', function () {
+            paypalButton.addEventListener('click', function () {
           instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
           // Submit payload.nonce to your server
-          var nonce = payload.nonce;
-          document.getElementById('nonce').value = nonce;   
-          })
-            });
+          document.getElementById('nonce').value = paypload.nonce; 
+
+          paypalForm.submit();  
+          });
+        });
         });
     </script>
 @endsection
