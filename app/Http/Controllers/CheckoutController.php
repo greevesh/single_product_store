@@ -48,7 +48,7 @@ class CheckoutController extends Controller
         // instantiating Stripe
         $stripe = new Stripe();
         // creating the secret key
-        $stripe = Stripe::make('sk_test_ldIhJYw4QNiSoUcGtU4uJUu200JupOKhbk');
+        $stripe = Stripe::make(config('services.stripe.secret'));
 
         try {
             $charge = Stripe::charges()->create([

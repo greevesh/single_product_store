@@ -373,8 +373,8 @@
 
     <script>
         (function() {
-        // creates a Stripe client
-        var stripe = Stripe('pk_test_wrradQC7dUkhIZF7csawxhEi00xU1Bhr4s');
+        // creates a Stripe client if the public key is found
+        var stripe = Stripe("{{ config('services.stripe.public') }}");
 
         // creates an instance of Elements
         var elements = stripe.elements();
