@@ -464,7 +464,7 @@
             paypalButton.addEventListener('click', function () {
           instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
           // Submit payload.nonce to your server
-          document.getElementById('nonce').value = paypload.nonce; 
+          document.getElementById('nonce').value = payload.nonce; 
 
           paypalForm.submit();  
           });
