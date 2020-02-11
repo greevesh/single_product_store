@@ -45,9 +45,7 @@ class CheckoutController extends Controller
         //     'card-name' => 'required'
         // ]);
 
-        // instantiating Stripe
-        $stripe = new Stripe();
-        // creating the secret key
+        // storing data with Stripe
         $stripe = Stripe::make(config('services.stripe.secret'));
 
         try {

@@ -350,7 +350,7 @@
                     <div id="dropin-container"></div>
 
                     <input id="nonce" name="nonce" type="hidden">
-                    <button style="color: #fff; background-color: royalblue" id="paypal-button" class="btn btn-lg btn-block">Submit Payment</button>
+                    <button style="color: #fff; background-color: royalblue" id="paypal-button" class="btn btn-lg btn-block">Pay with PayPal</button>
                 </form>
             </div>
         @endif
