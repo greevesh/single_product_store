@@ -345,12 +345,23 @@
             <div>
                 <h2>Pay with PayPal</h2>
 
-                <form method="POST" action="{{ route('checkout.paypal') }}">
-                    @csrf
-                    <div id="dropin-container"></div>
-
-                    <input id="nonce" name="nonce" type="hidden">
-                    <button style="color: #fff; background-color: royalblue" id="paypal-button" class="btn btn-lg btn-block">Pay with PayPal</button>
+                <form method="POST" id="payment-form" action="{{ route('checkout.paypal') }}">
+                    @csrf 
+                    <section>
+                        <label for="amount">
+                            <span class="input-label">Amount</span>
+                            <div class="input-wrapper amount-wrapper">
+                                <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
+                            </div>
+                        </label>
+    
+                        <div class="bt-drop-in-wrapper">
+                            <div id="bt-dropin"></div>
+                        </div>
+                    </section>
+    
+                    <input id="nonce" name="payment_method_nonce" type="hidden" />
+                    <button class="button" type="submit"><span>Test Transaction</span></button>
                 </form>
             </div>
         @endif
@@ -449,6 +460,37 @@
     <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
 
     <script>
+        var form = document.querySelector('#payment-form');
+
+        braintree.dropin.create({
+          authorization: '{{ $paypalToken }}',
+          selector: '#bt-dropin',
+          paypal: {
+            flow: 'vault'
+          }
+        }, function (createErr, instance) {
+          if (createErr) {
+            console.log('Create Error', createErr);
+            return;
+          }
+          form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            instance.requestPaymentMethod(function (err, payload) {
+              if (err) {
+                console.log('Request Payment Method Error', err);
+                return;
+              }
+
+              // Add the nonce to the form and submit
+              document.querySelector('#nonce').value = payload.nonce;
+              form.submit();
+            });
+          });
+        });
+    </script>
+
+    {{-- <script>
         var paypalForm = document.getElementById('paypal-form')
         var paypalButton = document.getElementById('paypal-button');
         braintree.dropin.create({
@@ -462,13 +504,13 @@
         },
         function (createErr, instance){
             paypalButton.addEventListener('click', function () {
-          instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-          // Submit payload.nonce to your server
-          document.getElementById('nonce').value = payload.nonce; 
+            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+            // Submit payload.nonce to your server
+            document.getElementById('nonce').value = payload.nonce; 
 
           paypalForm.submit();  
           });
         });
         });
-    </script>
+    </script> --}}
 @endsection

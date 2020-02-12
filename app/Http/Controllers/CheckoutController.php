@@ -87,8 +87,8 @@ class CheckoutController extends Controller
             'privateKey' => config('services.braintree.privateKey')
             ]); 
 
-        $amount = Cart::total();
-        $nonce = $request->nonce; 
+        $amount = $request->input('amount');
+        $nonce = $request->input('payment_method_nonce'); 
 
         // dd($nonce);
         
