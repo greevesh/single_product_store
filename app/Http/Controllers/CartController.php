@@ -10,7 +10,7 @@ class CartController extends Controller
 {
     public function store(Request $request)
     {
-        Cart::add(1, 'Nuzest Protein Powder', 1, '59.99');
+        Cart::add(1, 'Nuzest Protein Powder', 1, '0.01');
         
         return redirect()->route('landing')->with('quantityIncreasedMessage', 'Product quantity has been increased.');
     }
