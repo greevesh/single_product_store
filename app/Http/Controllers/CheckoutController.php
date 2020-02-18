@@ -94,7 +94,7 @@ class CheckoutController extends Controller
         
         $result = $gateway->transaction()->sale([
             'amount' => $amount, 
-            'nonce' => $nonce,         
+            'paymentMethodNonce' => $nonce,         
             'options' => [
                 'submitForSettlement' => true
             ]
