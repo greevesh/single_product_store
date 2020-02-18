@@ -97,8 +97,8 @@ class CheckoutController extends Controller
             ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
                                              A confirmation email has also been sent.');
 
-            Mail::send(new OrderConfirmed);
-            Cart::destroy(); 
+            Cart::destroy();
+            Mail::send(new OrderConfirmed); 
         } 
         else 
         {
