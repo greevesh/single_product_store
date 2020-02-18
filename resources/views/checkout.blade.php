@@ -351,7 +351,7 @@
                         <label for="amount">
                             <span class="input-label">Amount</span>
                             <div class="input-wrapper amount-wrapper">
-                                <input id="amount" name="amount" type="tel" min="1" placeholder="Amount" value="10">
+                                <input id="amount" name="amount" type="hidden" value="{{ Cart::total() }}">
                             </div>
                         </label>
     
@@ -489,28 +489,4 @@
           });
         });
     </script>
-
-    {{-- <script>
-        var paypalForm = document.getElementById('paypal-form')
-        var paypalButton = document.getElementById('paypal-button');
-        braintree.dropin.create({
-            authorization: '{{ $paypalToken }}',
-            container: '#dropin-container',
-            paypal: {
-          flow: 'checkout',
-          amount: '{{ Cart::total() }}',
-          currency: 'GBP'
-            }
-        },
-        function (createErr, instance){
-            paypalButton.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
-            // Submit payload.nonce to your server
-            document.getElementById('nonce').value = payload.nonce; 
-
-          paypalForm.submit();  
-          });
-        });
-        });
-    </script> --}}
 @endsection
