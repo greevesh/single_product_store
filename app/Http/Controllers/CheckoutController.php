@@ -72,6 +72,16 @@ class CheckoutController extends Controller
 
     public function paypal(Request $request)
     {
+        request()->validate([
+            'name' => 'required|min:5',
+            'email' => 'required|min:10',
+            'address' => 'required|min:10',
+            'address2',
+            'country' => 'required',
+            'postcode' => 'required',
+            'card-name' => 'required'
+        ]);
+        
         $gateway = new Braintree\Gateway([
             'environment' => config('services.braintree.environment'),
             'merchantId' => config('services.braintree.merchantId'),
