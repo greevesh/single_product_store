@@ -35,8 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    // changed permissions to give Forge access.
+
     'braintree' => [
-        'environment' => env('BT_ENVIRONMENT', 'sandbox'),
+        'environment' => env('BT_ENVIRONMENT', 'production'),
         'merchantId' => env('BT_MERCHANT_ID'),
         'publicKey' => env('BT_PUBLIC_KEY'),
         'privateKey' => env('BT_PRIVATE_KEY'),
