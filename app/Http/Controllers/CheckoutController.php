@@ -21,29 +21,21 @@ class CheckoutController extends Controller
         ]);
 
         $paypalToken = $gateway->clientToken()->generate();
-        // try {
-        //     $result = $gateway->paymentMethodNonce()->create();
-        //     $nonce = $result->paymentMethodNonce->nonce;
-        // } 
-        // catch(Braintree_Exception_NotFound $e)
-        // {
-        //     echo $e->getMessage();
-        // }
 
         return view('checkout', compact('paypalToken'));
     }
 
     public function store(Request $request)
     {
-        // request()->validate([
-        //     'name' => 'required|min:5',
-        //     'email' => 'required|min:10',
-        //     'address' => 'required|min:10',
-        //     'address2',
-        //     'country' => 'required',
-        //     'postcode' => 'required',
-        //     'card-name' => 'required'
-        // ]);
+        request()->validate([
+            'name' => 'required|min:5',
+            'email' => 'required|min:10',
+            'address' => 'required|min:10',
+            'address2',
+            'country' => 'required',
+            'postcode' => 'required',
+            'card-name' => 'required'
+        ]);
 
         // storing data with Stripe
         $stripe = Stripe::make(config('services.stripe.secret'));
