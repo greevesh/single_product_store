@@ -89,8 +89,6 @@ class CheckoutController extends Controller
 
         $amount = $request->input('amount');
         $nonce = $request->input('payment_method_nonce'); 
-
-        // dd($nonce);
         
         $result = $gateway->transaction()->sale([
             'amount' => $amount, 
