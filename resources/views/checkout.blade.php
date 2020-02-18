@@ -349,7 +349,6 @@
                     @csrf 
                     <section>
                         <label for="amount">
-                            <span class="input-label">Amount</span>
                             <div class="input-wrapper amount-wrapper">
                                 <input id="amount" name="amount" type="hidden" value="{{ Cart::total() }}">
                             </div>
@@ -360,8 +359,8 @@
                         </div>
                     </section>
     
-                    <input id="nonce" name="payment_method_nonce" type="hidden" />
-                    <button class="button" type="submit"><span>Test Transaction</span></button>
+                    <input id="nonce" name="payment_method_nonce" type="hidden">
+                    <button style="color: #fff; background-color: blue" class="btn btn-lg btn-block" type="submit"><span>Pay with PayPal</span></button>
                 </form>
             </div>
         @endif
