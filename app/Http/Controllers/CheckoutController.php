@@ -60,9 +60,11 @@ class CheckoutController extends Controller
             $customer = $stripe->customers()->create(['email' => $request->email]);
 
             Cart::destroy();
+            Mail::send(new OrderConfirmed);
 
             return redirect()->route('confirmation')
-            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.');
+            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted. 
+                                             A confirmation email has also been sent.');
 
         } 
             catch (CardErrorException $e) {
@@ -72,15 +74,15 @@ class CheckoutController extends Controller
 
     public function paypal(Request $request)
     {
-        request()->validate([
-            'name' => 'required|min:5',
-            'email' => 'required|min:10',
-            'address' => 'required|min:10',
-            'address2',
-            'country' => 'required',
-            'postcode' => 'required',
-            'card-name' => 'required'
-        ]);
+        // request()->validate([
+        //     'name' => 'required|min:5',
+        //     'email' => 'required|min:10',
+        //     'address' => 'required|min:10',
+        //     'address2',
+        //     'country' => 'required',
+        //     'postcode' => 'required',
+        //     'card-name' => 'required'
+        // ]);
         
         $gateway = new Braintree\Gateway([
             'environment' => config('services.braintree.environment'),
@@ -103,12 +105,13 @@ class CheckoutController extends Controller
         if ($result->success or !is_null($result->transaction)) 
         {
             $transaction = $result->transaction;
-            return redirect()->route('confirmation')
-            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
-                                             A confirmation email has also been sent.');
 
             Cart::destroy();
-            Mail::send(new OrderConfirmed); 
+            Mail::send(new OrderConfirmed);
+
+            return redirect()->route('confirmation')
+            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
+                                             A confirmation email has also been sent.'); 
         } 
         else 
         {
