@@ -107,7 +107,6 @@ class CheckoutController extends Controller
             $transaction = $result->transaction;
 
             Cart::destroy();
-            Mail::send(new OrderConfirmed);
 
             return redirect()->route('confirmation')
             ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
