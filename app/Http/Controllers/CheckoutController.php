@@ -59,8 +59,8 @@ class CheckoutController extends Controller
 
             $customer = $stripe->customers()->create(['email' => $request->email]);
 
-            Cart::destroy();
             Mail::send(new OrderConfirmed);
+            Cart::destroy();
 
             return redirect()->route('confirmation')
             ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted. 
