@@ -109,8 +109,7 @@ class CheckoutController extends Controller
             Cart::destroy();
 
             return redirect()->route('confirmation')
-            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.
-                                             A confirmation email has also been sent.'); 
+            ->with('paymentSuccessMessage', 'Thank you! Your payment has been accepted.'); 
         } 
         else 
         {
