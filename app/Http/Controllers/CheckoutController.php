@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmed;
 use Braintree; 
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
+use Illuminate\Support\MessageBag;
 
 class CheckoutController extends Controller
 {
@@ -29,9 +30,8 @@ class CheckoutController extends Controller
     {
         request()->validate([
             'name' => 'required|min:5',
-            'email' => 'required|min:10',
+            'email' => 'required|unique:users|min:10',
             'address' => 'required|min:10',
-            'address2',
             'country' => 'required',
             'postcode' => 'required',
             'card-name' => 'required'
@@ -74,15 +74,14 @@ class CheckoutController extends Controller
 
     public function paypal(Request $request)
     {
-        // request()->validate([
-        //     'name' => 'required|min:5',
-        //     'email' => 'required|min:10',
-        //     'address' => 'required|min:10',
-        //     'address2',
-        //     'country' => 'required',
-        //     'postcode' => 'required',
-        //     'card-name' => 'required'
-        // ]);
+        request()->validate([
+            'name' => 'required|min:5',
+            'email' => 'required|unique:users|min:10',
+            'address' => 'required|min:10',
+            'country' => 'required',
+            'postcode' => 'required',
+            'card-name' => 'required'
+        ]);
         
         $gateway = new Braintree\Gateway([
             'environment' => config('services.braintree.environment'),
