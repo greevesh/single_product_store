@@ -314,7 +314,7 @@
                     <label for="cc-name">Name on card</label>
                     <input name="card-name" type="text" class="form-control" id="cc-name" placeholder="John F Appleseed" value="{{ old('card-name') }}" required>
                     <small class="text-muted">Full name as displayed on card</small>
-                    <div class="invalid-feedback">Name on card is required</div>
+                    <div class="invalid-feedback">Name on card is required.</div>
                 </div>
             </div>
 
@@ -323,7 +323,7 @@
                   <label class="ml-1" for="card-element">
                     Credit or debit card
                   </label>
-                  <div id="card-element">
+                  <div style="width: 95%;" id="card-element">
                     <!-- a Stripe Element will be inserted here. -->
                   </div>
               
@@ -358,8 +358,13 @@
                             <div id="bt-dropin"></div>
                         </div>
                     </section>
+
+                    <div style="color: red;" id="paypal-errors" role="alert"></div>
     
                     <input id="nonce" name="payment_method_nonce" type="hidden">
+
+                    <br>
+                    
                     <button id="paypal-button" style="color: #fff; background-color: blue" class="btn btn-lg btn-block" type="submit"><span>Pay with PayPal</span></button>
                 </form>
             </div>
@@ -376,7 +381,7 @@
             document.getElementById('stripe-button').disabled = true;
             document.getElementById('paypal-button').disabled = true;
             document.getElementById('no-products').textContent = 'Your cart is empty!';
-            document.getElementById('no-products').className = 'w-25 alert alert-danger';
+            document.getElementById('no-products').className = 'alert alert-danger';
         </script>
     @endif
     {{-- END ALERT: CART IS EMPTY --}}
@@ -477,8 +482,8 @@
 
             instance.requestPaymentMethod(function (err, payload) {
               if (err) {
-                console.log('Request Payment Method Error', err);
-                return;
+                document.getElementById('paypal-errors').textContent = 
+                "Payment declined. Make sure you've entered the correct details.";
               }
 
               // Add the nonce to the form and submit
